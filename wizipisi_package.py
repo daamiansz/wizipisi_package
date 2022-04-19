@@ -6,6 +6,7 @@ import os
 import itertools
 import errors
 import sys
+import tqdm
 
             
 def parser_package():
@@ -42,11 +43,11 @@ def packing():
     if os.path.isfile(args.src):
         obiekty=[args.src]
     elif os.path.isdir(args.src):
-        obiekty=glob.iglob(args.src+'/*')
+        obiekty=glob.glob(args.src+'/*')
     else:
         raise errors.FileNameException.ObjectNotExist(args.object_path)
         
-    for i in obiekty:
+    for i in tqdm.tqdm(obiekty, total=len(obiekty)):
         file=open(i, 'rb').read()
         if not os.path.isfile(args.dest+'.wizipisiindex'):
             last_ind=0
@@ -74,7 +75,7 @@ def unpacking():
     indeks={i.split(';')[0]:list(map(int, i[:-1].split(';')[1:])) for i in open(src_ind, 'r').readlines()}
 
     if args.file_name==None:
-        for key, value in indeks.items():
+        for key, value in tqdm.tqdm(indeks.items(), total=len(indeks)):
             with open('{0}/{1}'.format(args.dest, key), 'wb') as f:
                 with open(src, 'rb') as g:
                     g.seek(value[0])
