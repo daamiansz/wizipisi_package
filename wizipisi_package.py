@@ -3,7 +3,6 @@
 import glob
 import argparse
 import os
-import itertools
 import errors
 import sys
 import tqdm
